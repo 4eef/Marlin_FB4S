@@ -618,7 +618,7 @@
 #define HEATER_6_MAXTEMP 500
 #define HEATER_7_MAXTEMP 500
 #define BED_MAXTEMP      180
-#define CHAMBER_MAXTEMP  100
+#define CHAMBER_MAXTEMP  110
 
 /**
  * Thermal Overshoot
@@ -2144,7 +2144,7 @@
 // Manually set the home position. Leave these undefined for automatic settings.
 // For DELTA this is the top-center of the Cartesian print volume.
 //#define MANUAL_X_HOME_POS 0
-#define MANUAL_Y_HOME_POS 3
+//#define MANUAL_Y_HOME_POS 0
 //#define MANUAL_Z_HOME_POS 0
 //#define MANUAL_I_HOME_POS 0
 //#define MANUAL_J_HOME_POS 0
@@ -2314,24 +2314,28 @@ EEPROM_W25Q
 //
 // Preheat Constants - Up to 6 are supported without changes
 //
-#define PREHEAT_1_LABEL       "PETG"
-#define PREHEAT_1_TEMP_HOTEND  235
+#define PREHEAT_1_LABEL    "PETG"
+#define PREHEAT_1_TEMP_HOTEND 235
 #define PREHEAT_1_TEMP_BED     80
+#define PREHEAT_1_TEMP_CHAMBER  0
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
-#define PREHEAT_2_LABEL       "PC"
-#define PREHEAT_2_TEMP_HOTEND  250
-#define PREHEAT_2_TEMP_BED     110
+#define PREHEAT_2_LABEL      "PC"
+#define PREHEAT_2_TEMP_HOTEND 250
+#define PREHEAT_2_TEMP_BED    110
+#define PREHEAT_2_TEMP_CHAMBER  0
 #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
-#define PREHEAT_3_LABEL       "PA6"
-#define PREHEAT_3_TEMP_HOTEND  265
-#define PREHEAT_3_TEMP_BED     115
+#define PREHEAT_3_LABEL     "PA6"
+#define PREHEAT_3_TEMP_HOTEND 265
+#define PREHEAT_3_TEMP_BED    115
+#define PREHEAT_3_TEMP_CHAMBER  0
 #define PREHEAT_3_FAN_SPEED     0 // Value from 0 to 255
 
-#define PREHEAT_4_LABEL       "PA12"
-#define PREHEAT_4_TEMP_HOTEND  260
-#define PREHEAT_4_TEMP_BED     110
+#define PREHEAT_4_LABEL    "PA12"
+#define PREHEAT_4_TEMP_HOTEND 260
+#define PREHEAT_4_TEMP_BED    110
+#define PREHEAT_4_TEMP_CHAMBER  0
 #define PREHEAT_4_FAN_SPEED     0 // Value from 0 to 255
 
 // @section motion

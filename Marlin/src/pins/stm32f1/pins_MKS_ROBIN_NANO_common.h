@@ -61,7 +61,6 @@ BlTouch
 #define X_STOP_PIN                          PA15
 #define Y_STOP_PIN                          PA12
 #define Z_MIN_PIN                           PA11
-#define Z_MAX_PIN                           PC4
 
 //
 // Steppers
@@ -82,16 +81,12 @@ BlTouch
 #define E0_STEP_PIN                         PD6
 #define E0_DIR_PIN                          PD3
 
-#define E1_ENABLE_PIN                       PA3
-#define E1_STEP_PIN                         PA6
-#define E1_DIR_PIN                          PA1
-
 //
 // Temperature Sensors
 //
 #define TEMP_0_PIN                          PC1   // TH1
-#define TEMP_1_PIN                          PC2   // TH2
 #define TEMP_BED_PIN                        PC0   // TB1
+#define TEMP_CHAMBER_PIN                    PC2   // TH2
 
 //
 // Heaters / Fans
@@ -99,13 +94,21 @@ BlTouch
 #ifndef HEATER_0_PIN
   #define HEATER_0_PIN                      PC3
 #endif
-#ifndef FAN_PIN
-  #define FAN_PIN                           PB1   // FAN
-#endif
 #ifndef HEATER_BED_PIN
   #define HEATER_BED_PIN                    PA0
 #endif
-
+#ifndef HEATER_CHMBR_PIN
+  #define HEATER_CHMBR_PIN                  PA3
+#endif
+#ifndef FAN_PIN
+  #define FAN_PIN                           PB1   // Model fan
+#endif
+// #ifndef FAN2_PIN
+//   #define FAN2_PIN                          PA2   // Controller fan
+// #endif
+#ifndef FAN2_PIN
+  #define FAN2_PIN                          PB2   // Chamber fan
+#endif
 #if HOTENDS == 1 && DISABLED(HEATERS_PARALLEL)
   #ifndef FAN1_PIN
     #define FAN1_PIN                        PB0
