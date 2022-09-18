@@ -1664,9 +1664,11 @@ void Temperature::min_temp_error(const heater_id_t heater_id) {
 
     #if EITHER(CHAMBER_FAN, CHAMBER_VENT)
       static bool flag_chamber_off; // = false
+      static millis_t fan_stop_time;
 
-      if (temp_chamber.target > CHAMBER_MINTEMP) {
+      if ((temp_chamber.target > CHAMBER_MINTEMP) || (temp_chamber.celsius > CHAMBER_AUTO_FAN_TEMPERATURE)) {
         flag_chamber_off = false;
+        fan_stop_time = ms + SEC_TO_MS(CHAMBER_AUTO_FAN_COOLING_TIME);
 
         #if ENABLED(CHAMBER_FAN)
           int16_t fan_chamber_pwm;
@@ -1710,7 +1712,7 @@ void Temperature::min_temp_error(const heater_id_t heater_id) {
             flag_chamber_excess_heat = false;
         #endif
       }
-      else if (!flag_chamber_off) {
+      else if ((!flag_chamber_off) && (ms >= fan_stop_time)) {
         #if ENABLED(CHAMBER_FAN)
           flag_chamber_off = true;
           set_fan_speed(CHAMBER_FAN_INDEX, 0);
