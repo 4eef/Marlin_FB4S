@@ -789,9 +789,9 @@ RN13S           - плата Robin Nano-s 1.3
     #define DEFAULT_Ki_LIST {   1.08,   1.08 }
     #define DEFAULT_Kd_LIST { 114.00, 114.00 }
   #else
-    #define DEFAULT_Kp  17.04
-    #define DEFAULT_Ki   1.31
-    #define DEFAULT_Kd  55.34
+    #define DEFAULT_Kp 20.6
+    #define DEFAULT_Ki 1.59
+    #define DEFAULT_Kd 66.7
   #endif
 #endif
 
@@ -874,9 +874,9 @@ RN13S           - плата Robin Nano-s 1.3
 
   // 120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   // from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  #define DEFAULT_bedKp 40.68
-  #define DEFAULT_bedKi 7.93
-  #define DEFAULT_bedKd 139.15
+  #define DEFAULT_bedKp 48.8
+  #define DEFAULT_bedKi 9.11
+  #define DEFAULT_bedKd 174.4
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
 
@@ -917,9 +917,9 @@ RN13S           - плата Robin Nano-s 1.3
   // Lasko "MyHeat Personal Heater" (200w) modified with a Fotek SSR-10DA to control only the heating element
   // and placed inside the small Creality printer enclosure tent.
   //
-  #define DEFAULT_chamberKp 37.04
-  #define DEFAULT_chamberKi 1.40
-  #define DEFAULT_chamberKd 655.17
+  #define DEFAULT_chamberKp 37.8
+  #define DEFAULT_chamberKi 7.37
+  #define DEFAULT_chamberKd 128.9
   // M309 P37.04 I1.04 D655.17
 
   // FIND YOUR OWN: "M303 E-2 C8 S50" to run autotune on the chamber at 50 degreesC for 8 cycles.
@@ -2385,23 +2385,17 @@ EEPROM_W25Q
 #define PREHEAT_1_TEMP_CHAMBER  0
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
+#define PREHEAT_3_LABEL      "PA"
+#define PREHEAT_3_TEMP_HOTEND 260
+#define PREHEAT_3_TEMP_BED    110
+#define PREHEAT_3_TEMP_CHAMBER  0
+#define PREHEAT_3_FAN_SPEED     0 // Value from 0 to 255
+
 #define PREHEAT_2_LABEL      "PC"
 #define PREHEAT_2_TEMP_HOTEND 250
 #define PREHEAT_2_TEMP_BED    110
 #define PREHEAT_2_TEMP_CHAMBER  0
 #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
-
-#define PREHEAT_3_LABEL     "PA6"
-#define PREHEAT_3_TEMP_HOTEND 265
-#define PREHEAT_3_TEMP_BED    115
-#define PREHEAT_3_TEMP_CHAMBER  0
-#define PREHEAT_3_FAN_SPEED     0 // Value from 0 to 255
-
-#define PREHEAT_4_LABEL    "PA12"
-#define PREHEAT_4_TEMP_HOTEND 260
-#define PREHEAT_4_TEMP_BED    110
-#define PREHEAT_4_TEMP_CHAMBER  0
-#define PREHEAT_4_FAN_SPEED     0 // Value from 0 to 255
 
 // @section motion
 
