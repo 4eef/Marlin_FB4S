@@ -785,9 +785,9 @@
   // Lasko "MyHeat Personal Heater" (200w) modified with a Fotek SSR-10DA to control only the heating element
   // and placed inside the small Creality printer enclosure tent.
   //
-  #define DEFAULT_chamberKp 37.8
-  #define DEFAULT_chamberKi 7.37
-  #define DEFAULT_chamberKd 128.9
+  #define DEFAULT_chamberKp 18.2
+  #define DEFAULT_chamberKi 0.93
+  #define DEFAULT_chamberKd 238.2
   // M309 P37.04 I1.04 D655.17
 
   // FIND YOUR OWN: "M303 E-2 C8 S50" to run autotune on the chamber at 50 degreesC for 8 cycles.
