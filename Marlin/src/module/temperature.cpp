@@ -1211,20 +1211,30 @@ int16_t Temperature::getHeaterPower(const heater_id_t heater_id) {
       #endif
     };
 
-    uint8_t fanState = 0;
+    static uint8_t fanState;
+
     HOTEND_LOOP() {
-      if (temp_hotend[e].celsius >= EXTRUDER_AUTO_FAN_TEMPERATURE)
+      if (temp_hotend[e].celsius >= (EXTRUDER_AUTO_FAN_TEMPERATURE + EXTRUDER_AUTO_FAN_HYSTERESIS_TEMP) || (temp_bed.target > BED_MINTEMP)) {
         SBI(fanState, pgm_read_byte(&fanBit[e]));
+      } else if (temp_hotend[e].celsius <= (EXTRUDER_AUTO_FAN_TEMPERATURE - EXTRUDER_AUTO_FAN_HYSTERESIS_TEMP) && (temp_bed.target <= BED_MINTEMP)) {
+        CBI(fanState, pgm_read_byte(&fanBit[e]));
+      }
     }
 
     #if HAS_AUTO_CHAMBER_FAN
-      if (temp_chamber.celsius >= CHAMBER_AUTO_FAN_TEMPERATURE)
+      if (temp_chamber.celsius >= (CHAMBER_AUTO_FAN_TEMPERATURE + CHAMBER_AUTO_FAN_HYSTERESIS_TEMP)) {
         SBI(fanState, pgm_read_byte(&fanBit[CHAMBER_FAN_INDEX]));
+      } else if (temp_chamber.celsius <= (CHAMBER_AUTO_FAN_TEMPERATURE - CHAMBER_AUTO_FAN_HYSTERESIS_TEMP)) {
+        CBI(fanState, pgm_read_byte(&fanBit[CHAMBER_FAN_INDEX]));
+      }
     #endif
 
     #if HAS_AUTO_COOLER_FAN
-      if (temp_cooler.celsius >= COOLER_AUTO_FAN_TEMPERATURE)
+      if (temp_cooler.celsius >= (COOLER_AUTO_FAN_TEMPERATURE + COOLER_AUTO_FAN_HYSTERESIS_TEMP)) {
         SBI(fanState, pgm_read_byte(&fanBit[COOLER_FAN_INDEX]));
+      } else if (temp_cooler.celsius <= (COOLER_AUTO_FAN_TEMPERATURE - COOLER_AUTO_FAN_HYSTERESIS_TEMP)) {
+        CBI(fanState, pgm_read_byte(&fanBit[COOLER_FAN_INDEX]));
+      }
     #endif
 
     #define _UPDATE_AUTO_FAN(P,D,A) do{                   \
@@ -1712,11 +1722,11 @@ void Temperature::mintemp_error(const heater_id_t heater_id) {
 
     #if EITHER(CHAMBER_FAN, CHAMBER_VENT)
       static bool flag_chamber_off; // = false
-      static millis_t fan_stop_time;
+      static millis_t c_fan_stop_time;
 
       if ((temp_chamber.target > CHAMBER_MINTEMP) || (temp_chamber.celsius > CHAMBER_AUTO_FAN_TEMPERATURE)) {
         flag_chamber_off = false;
-        fan_stop_time = ms + SEC_TO_MS(CHAMBER_AUTO_FAN_COOLING_TIME);
+        c_fan_stop_time = ms + SEC_TO_MS(CHAMBER_AUTO_FAN_COOLING_TIME);
 
         #if ENABLED(CHAMBER_FAN)
           int16_t fan_chamber_pwm;
@@ -1759,7 +1769,7 @@ void Temperature::mintemp_error(const heater_id_t heater_id) {
             flag_chamber_excess_heat = false;
         #endif
       }
-      else if ((!flag_chamber_off) && (ms >= fan_stop_time)) {
+      else if ((!flag_chamber_off) && (ms >= c_fan_stop_time)) {
         #if ENABLED(CHAMBER_FAN)
           flag_chamber_off = true;
           set_fan_speed(CHAMBER_FAN_INDEX, 0);

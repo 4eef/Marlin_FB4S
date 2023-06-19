@@ -741,15 +741,15 @@ RN13S           - плата Robin Nano-s 1.3
 // Above this temperature the heater will be switched off.
 // This can protect components from overheating, but NOT from shorts and failures.
 // (Use MINTEMP for thermistor short/failure protection.)
-#define HEATER_0_MAXTEMP 500
-#define HEATER_1_MAXTEMP 500
-#define HEATER_2_MAXTEMP 500
-#define HEATER_3_MAXTEMP 500
-#define HEATER_4_MAXTEMP 500
-#define HEATER_5_MAXTEMP 500
-#define HEATER_6_MAXTEMP 500
-#define HEATER_7_MAXTEMP 500
-#define BED_MAXTEMP      180
+#define HEATER_0_MAXTEMP 285
+#define HEATER_1_MAXTEMP 285
+#define HEATER_2_MAXTEMP 285
+#define HEATER_3_MAXTEMP 285
+#define HEATER_4_MAXTEMP 285
+#define HEATER_5_MAXTEMP 285
+#define HEATER_6_MAXTEMP 285
+#define HEATER_7_MAXTEMP 285
+#define BED_MAXTEMP      150
 #define CHAMBER_MAXTEMP  110
 
 /**
@@ -2379,29 +2379,35 @@ EEPROM_W25Q
 //
 // Preheat Constants - Up to 10 are supported without changes
 //
-#define PREHEAT_1_LABEL    "PETG"
-#define PREHEAT_1_TEMP_HOTEND 235
-#define PREHEAT_1_TEMP_BED     80
+#define PREHEAT_1_LABEL   "180 C"
+#define PREHEAT_1_TEMP_HOTEND 180
+#define PREHEAT_1_TEMP_BED      0
 #define PREHEAT_1_TEMP_CHAMBER  0
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
-#define PREHEAT_3_LABEL      "PA"
-#define PREHEAT_3_TEMP_HOTEND 260
-#define PREHEAT_3_TEMP_BED    110
+#define PREHEAT_2_LABEL   "200 C"
+#define PREHEAT_2_TEMP_HOTEND 200
+#define PREHEAT_2_TEMP_BED      0
+#define PREHEAT_2_TEMP_CHAMBER  0
+#define PREHEAT_2_FAN_SPEED     0
+
+#define PREHEAT_3_LABEL   "220 C"
+#define PREHEAT_3_TEMP_HOTEND 220
+#define PREHEAT_3_TEMP_BED      0
 #define PREHEAT_3_TEMP_CHAMBER  0
-#define PREHEAT_3_FAN_SPEED     0 // Value from 0 to 255
+#define PREHEAT_3_FAN_SPEED     0
 
-#define PREHEAT_2_LABEL      "PC"
-#define PREHEAT_2_TEMP_HOTEND 250
-#define PREHEAT_2_TEMP_BED    110
-#define PREHEAT_2_TEMP_CHAMBER  0
-#define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
+#define PREHEAT_4_LABEL   "240 C"
+#define PREHEAT_4_TEMP_HOTEND 240
+#define PREHEAT_4_TEMP_BED      0
+#define PREHEAT_4_TEMP_CHAMBER  0
+#define PREHEAT_4_FAN_SPEED     0
 
-#define PREHEAT_2_LABEL      "PLA"
-#define PREHEAT_2_TEMP_HOTEND 180
-#define PREHEAT_2_TEMP_BED     60
-#define PREHEAT_2_TEMP_CHAMBER  0
-#define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
+#define PREHEAT_5_LABEL   "260 C"
+#define PREHEAT_5_TEMP_HOTEND 260
+#define PREHEAT_5_TEMP_BED      0
+#define PREHEAT_5_TEMP_CHAMBER  0
+#define PREHEAT_5_FAN_SPEED     0
 
 // @section motion
 
