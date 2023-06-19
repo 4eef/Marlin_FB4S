@@ -874,9 +874,9 @@ RN13S           - плата Robin Nano-s 1.3
 
   // 120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   // from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  #define DEFAULT_bedKp 48.8
-  #define DEFAULT_bedKi 9.11
-  #define DEFAULT_bedKd 174.4
+  #define DEFAULT_bedKp 39.6
+  #define DEFAULT_bedKi 7.08
+  #define DEFAULT_bedKd 148.0
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
 
@@ -917,9 +917,9 @@ RN13S           - плата Robin Nano-s 1.3
   // Lasko "MyHeat Personal Heater" (200w) modified with a Fotek SSR-10DA to control only the heating element
   // and placed inside the small Creality printer enclosure tent.
   //
-  #define DEFAULT_chamberKp 18.2
-  #define DEFAULT_chamberKi 0.93
-  #define DEFAULT_chamberKd 238.2
+  #define DEFAULT_chamberKp 8.9
+  #define DEFAULT_chamberKi 0.24
+  #define DEFAULT_chamberKd 218.7
   // M309 P37.04 I1.04 D655.17
 
   // FIND YOUR OWN: "M303 E-2 C8 S50" to run autotune on the chamber at 50 degreesC for 8 cycles.
