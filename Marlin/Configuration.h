@@ -2397,6 +2397,12 @@ EEPROM_W25Q
 #define PREHEAT_2_TEMP_CHAMBER  0
 #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
+#define PREHEAT_2_LABEL      "PLA"
+#define PREHEAT_2_TEMP_HOTEND 180
+#define PREHEAT_2_TEMP_BED     60
+#define PREHEAT_2_TEMP_CHAMBER  0
+#define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
+
 // @section motion
 
 /**
