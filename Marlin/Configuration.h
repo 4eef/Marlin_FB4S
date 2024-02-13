@@ -658,7 +658,7 @@ RN13S           - плата Robin Nano-s 1.3
  *   999 : Dummy Table that ALWAYS reads 100°C or the temperature defined below.
  *
  */
-#define TEMP_SENSOR_0 13
+#define TEMP_SENSOR_0 5
 #define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
@@ -789,9 +789,9 @@ RN13S           - плата Robin Nano-s 1.3
     #define DEFAULT_Ki_LIST {   1.08,   1.08 }
     #define DEFAULT_Kd_LIST { 114.00, 114.00 }
   #else
-    #define DEFAULT_Kp 20.6
-    #define DEFAULT_Ki 1.59
-    #define DEFAULT_Kd 66.7
+    #define DEFAULT_Kp 16.6
+    #define DEFAULT_Ki 3.24
+    #define DEFAULT_Kd 21.2
   #endif
 #endif
 
