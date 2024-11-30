@@ -754,6 +754,7 @@ class Temperature {
 
     #if HAS_FAN_LOGIC
       static millis_t fan_update_ms;
+      static uint8_t fanState;
 
       static void manage_extruder_fans(millis_t ms) {
         if (ELAPSED(ms, fan_update_ms)) { // only need to check fan state very infrequently
@@ -778,6 +779,11 @@ class Temperature {
 
     #if ENABLED(PROBING_HEATERS_OFF)
       static bool paused_for_probing;
+    #endif
+
+    #if ENABLED(CHAMBER_FAN)
+      static bool flag_c_fan_off;
+      static millis_t c_fan_stop_time;
     #endif
 
   public:

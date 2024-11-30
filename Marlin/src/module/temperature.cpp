@@ -315,6 +315,11 @@ PGMSTR(str_t_heating_failed, STR_T_HEATING_FAILED);
   bool Temperature::adaptive_fan_slowing = true;
 #endif
 
+#if ENABLED(CHAMBER_FAN)
+  bool Temperature::flag_c_fan_off = false;
+  millis_t Temperature::c_fan_stop_time = 0;
+#endif
+
 #if HAS_HOTEND
   hotend_info_t Temperature::temp_hotend[HOTENDS];
   constexpr celsius_t Temperature::hotend_maxtemp[HOTENDS];
@@ -619,6 +624,7 @@ volatile bool Temperature::raw_temps_ready = false;
 #if HAS_FAN_LOGIC
   constexpr millis_t Temperature::fan_update_interval_ms;
   millis_t Temperature::fan_update_ms = 0;
+  uint8_t Temperature::fanState = 0;
 #endif
 
 #if ENABLED(FAN_SOFT_PWM)
@@ -1211,20 +1217,18 @@ int16_t Temperature::getHeaterPower(const heater_id_t heater_id) {
       #endif
     };
 
-    static uint8_t fanState;
-
     HOTEND_LOOP() {
-      if (temp_hotend[e].celsius >= (EXTRUDER_AUTO_FAN_TEMPERATURE + EXTRUDER_AUTO_FAN_HYSTERESIS_TEMP) || (temp_bed.target > BED_MINTEMP)) {
+      if ((temp_hotend[e].celsius >= (EXTRUDER_AUTO_FAN_TEMPERATURE + EXTRUDER_AUTO_FAN_HYSTERESIS_TEMP)) || (temp_bed.target > BED_MINTEMP)) {
         SBI(fanState, pgm_read_byte(&fanBit[e]));
-      } else if (temp_hotend[e].celsius <= (EXTRUDER_AUTO_FAN_TEMPERATURE - EXTRUDER_AUTO_FAN_HYSTERESIS_TEMP) && (temp_bed.target <= BED_MINTEMP)) {
+      } else if ((temp_hotend[e].celsius <= (EXTRUDER_AUTO_FAN_TEMPERATURE - EXTRUDER_AUTO_FAN_HYSTERESIS_TEMP)) && (temp_bed.target <= BED_MINTEMP)) {
         CBI(fanState, pgm_read_byte(&fanBit[e]));
       }
     }
 
     #if HAS_AUTO_CHAMBER_FAN
-      if (temp_chamber.celsius >= (CHAMBER_AUTO_FAN_TEMPERATURE + CHAMBER_AUTO_FAN_HYSTERESIS_TEMP)) {
+      if (((temp_chamber.celsius >= (CHAMBER_AUTO_FAN_TEMPERATURE + CHAMBER_AUTO_FAN_HYSTERESIS_TEMP)) || (temp_chamber.target > CHAMBER_MINTEMP)) && (!flag_c_fan_off)) {
         SBI(fanState, pgm_read_byte(&fanBit[CHAMBER_FAN_INDEX]));
-      } else if (temp_chamber.celsius <= (CHAMBER_AUTO_FAN_TEMPERATURE - CHAMBER_AUTO_FAN_HYSTERESIS_TEMP)) {
+      } else if ((temp_chamber.celsius <= (CHAMBER_AUTO_FAN_TEMPERATURE - CHAMBER_AUTO_FAN_HYSTERESIS_TEMP)) && (temp_chamber.target <= CHAMBER_MINTEMP) && (flag_c_fan_off)) {
         CBI(fanState, pgm_read_byte(&fanBit[CHAMBER_FAN_INDEX]));
       }
     #endif
@@ -1721,27 +1725,13 @@ void Temperature::mintemp_error(const heater_id_t heater_id) {
     #endif
 
     #if EITHER(CHAMBER_FAN, CHAMBER_VENT)
-      static bool flag_chamber_off; // = false
-      static millis_t c_fan_stop_time;
+      // static bool flag_chamber_off; // = false
+      
 
-      if ((temp_chamber.target > CHAMBER_MINTEMP) || (temp_chamber.celsius > CHAMBER_AUTO_FAN_TEMPERATURE)) {
-        flag_chamber_off = false;
-        c_fan_stop_time = ms + SEC_TO_MS(CHAMBER_AUTO_FAN_COOLING_TIME);
-
+      if (temp_chamber.target > CHAMBER_MINTEMP) {
         #if ENABLED(CHAMBER_FAN)
-          int16_t fan_chamber_pwm;
-          #if CHAMBER_FAN_MODE == 0
-            fan_chamber_pwm = CHAMBER_FAN_BASE;
-          #elif CHAMBER_FAN_MODE == 1
-            fan_chamber_pwm = temp_chamber.is_above_target() ? (CHAMBER_FAN_BASE) + (CHAMBER_FAN_FACTOR) * (temp_chamber.celsius - temp_chamber.target) : 0;
-          #elif CHAMBER_FAN_MODE == 2
-            fan_chamber_pwm = (CHAMBER_FAN_BASE) + (CHAMBER_FAN_FACTOR) * ABS(temp_chamber.celsius - temp_chamber.target);
-            if (temp_chamber.soft_pwm_amount) fan_chamber_pwm += (CHAMBER_FAN_FACTOR) * 2;
-          #elif CHAMBER_FAN_MODE == 3
-            fan_chamber_pwm = (CHAMBER_FAN_BASE) + _MAX((CHAMBER_FAN_FACTOR) * (temp_chamber.celsius - temp_chamber.target), 0);
-          #endif
-          NOMORE(fan_chamber_pwm, 255);
-          set_fan_speed(CHAMBER_FAN_INDEX, fan_chamber_pwm);
+          flag_c_fan_off = false;
+          c_fan_stop_time = ms + SEC_TO_MS(CHAMBER_AUTO_FAN_COOLING_TIME);
         #endif
 
         #if ENABLED(CHAMBER_VENT)
@@ -1769,10 +1759,9 @@ void Temperature::mintemp_error(const heater_id_t heater_id) {
             flag_chamber_excess_heat = false;
         #endif
       }
-      else if ((!flag_chamber_off) && (ms >= c_fan_stop_time)) {
+      else if ((!flag_c_fan_off) && (ms >= c_fan_stop_time)) {
         #if ENABLED(CHAMBER_FAN)
-          flag_chamber_off = true;
-          set_fan_speed(CHAMBER_FAN_INDEX, 0);
+          flag_c_fan_off = true;
         #endif
         #if ENABLED(CHAMBER_VENT)
           flag_chamber_excess_heat = false;
